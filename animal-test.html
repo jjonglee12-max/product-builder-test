@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동물상 테스트 🐾</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <a href="index.html" class="nav-btn">🏠 홈으로</a>
+        <button id="theme-btn">🌙 다크 모드</button>
+    </div>
+
+    <div class="container">
+        <h1>🐾 동물상 테스트</h1>
+        <p class="subtitle">나는 강아지상일까, 고양이상일까? 사진을 올려보세요!</p>
+
+        <!-- 이미지 업로드 영역 -->
+        <div class="file-upload" onclick="document.querySelector('.file-upload-input').click()">
+            <div class="image-upload-wrap">
+                <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                <div class="drag-text">
+                    <div class="upload-icon">📸</div>
+                    <h3>클릭하여 사진을 업로드하세요!</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- 이미지 미리보기 영역 -->
+        <div id="image-preview-container">
+            <img id="image-preview" src="#" alt="your image" />
+            <button class="remove-image" onclick="removeUpload()">✕</button>
+        </div>
+
+        <!-- 분석 결과 영역 -->
+        <div id="result-container" class="result-container">
+            <div class="result-bar-wrapper">
+                <div class="label-text">
+                    <span>🐶 강아지상</span>
+                    <span id="dog-percent">0%</span>
+                </div>
+                <div class="bar-container">
+                    <div id="dog-bar" class="bar dog-bar"></div>
+                </div>
+            </div>
+            <div class="result-bar-wrapper">
+                <div class="label-text">
+                    <span>🐱 고양이상</span>
+                    <span id="cat-percent">0%</span>
+                </div>
+                <div class="bar-container">
+                    <div id="cat-bar" class="bar cat-bar"></div>
+                </div>
+            </div>
+            <div id="final-result-text"></div>
+        </div>
+    </div>
+
+    <!-- TensorFlow & Teachable Machine 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/xU7QkfiJM/";
+        let model, maxPredictions;
+
+        // 모델 로드
+        async function loadModel() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+            console.log("모델 로드 완료!");
+        }
+        loadModel();
+
+        // 이미지 읽기 및 분석 실행
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.file-upload').style.display = 'none';
+                    document.getElementById('image-preview').src = e.target.result;
+                    document.getElementById('image-preview-container').style.display = 'block';
+                    document.getElementById('result-container').style.display = 'block';
+                    
+                    // 분석 시작
+                    predict();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 이미지 분석 함수
+        async function predict() {
+            const image = document.getElementById("image-preview");
+            const prediction = await model.predict(image);
+            
+            let topClass = "";
+            let topProb = 0;
+
+            for (let i = 0; i < maxPredictions; i++) {
+                const className = prediction[i].className;
+                const probability = (prediction[i].probability * 100).toFixed(0);
+                
+                if (className === "강아지") {
+                    document.getElementById("dog-percent").innerText = probability + "%";
+                    document.getElementById("dog-bar").style.width = probability + "%";
+                } else if (className === "고양이") {
+                    document.getElementById("cat-percent").innerText = probability + "%";
+                    document.getElementById("cat-bar").style.width = probability + "%";
+                }
+
+                if (prediction[i].probability > topProb) {
+                    topProb = prediction[i].probability;
+                    topClass = className;
+                }
+            }
+
+            // 최종 결과 메시지
+            const resultText = document.getElementById("final-result-text");
+            if (topClass === "강아지") {
+                resultText.innerText = "당신은 귀여운 강아지상! 🐶";
+            } else {
+                resultText.innerText = "당신은 도도한 고양이상! 🐱";
+            }
+        }
+
+        // 업로드 취소
+        function removeUpload() {
+            document.querySelector('.file-upload-input').value = "";
+            document.getElementById('image-preview-container').style.display = 'none';
+            document.querySelector('.file-upload').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('final-result-text').innerText = "";
+        }
+
+        // 테마 토글 (기존 script.js의 로직과 비슷하게 구현)
+        const themeBtn = document.getElementById('theme-btn');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeBtn.innerText = currentTheme === 'dark' ? '☀️ 라이트 모드' : '🌙 다크 모드';
+
+        themeBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                theme = 'light';
+                themeBtn.innerText = '🌙 다크 모드';
+            } else {
+                theme = 'dark';
+                themeBtn.innerText = '☀️ 라이트 모드';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+    </script>
+</body>
+</html>
