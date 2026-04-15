@@ -287,11 +287,53 @@ body {
     animation: bounceIn 0.8s ease;
 }
 
-@keyframes bounceIn {
-    0% { transform: scale(0.3); opacity: 0; }
-    50% { transform: scale(1.05); }
-    70% { transform: scale(0.9); }
-    100% { transform: scale(1); opacity: 1; }
+/* 푸터 스타일 */
+footer {
+    margin-top: 60px;
+    width: 100%;
+    max-width: 650px;
+    padding: 30px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--subtitle-color);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #667eea;
+}
+
+/* 안내 텍스트 스타일 */
+.guide-section {
+    text-align: left;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+    line-height: 1.7;
+}
+
+.guide-section h3 {
+    font-family: 'Jua', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.guide-section p {
+    margin-bottom: 10px;
 }
 
 .container {

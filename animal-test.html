@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>동물상 테스트 🐾</title>
+    <title>AI 동물상 테스트 - 강아지? 고양이? 당신의 동물상을 확인하세요!</title>
+    <meta name="description" content="구글 인공지능 기술(Teachable Machine)을 활용한 신개념 동물상 테스트. 얼굴 사진 한 장으로 당신의 매력을 분석해 보세요.">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4525432737309335"
+     crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-4525432737309335">
 </head>
 <body>
     <div class="theme-toggle">
@@ -56,6 +62,12 @@
             </div>
             <div id="final-result-text"></div>
         </div>
+
+        <div class="guide-section">
+            <h3>🤖 AI 동물상 분석 기술</h3>
+            <p>본 테스트는 Google의 <strong>Teachable Machine</strong> 라이브러리를 활용합니다. 수만 장의 강아지와 고양이 데이터를 학습한 인공지능 모델이 사용자의 얼굴 특징(눈매, 코의 형태, 입매 등)을 실시간으로 분석하여 가장 닮은 동물을 찾아냅니다.</p>
+            <p><strong>보안 안내:</strong> 업로드하신 사진은 절대 서버에 저장되거나 전송되지 않습니다. 모든 분석 과정은 사용자의 브라우저 내에서 안전하게 이루어집니다.</p>
+        </div>
     </div>
 
     <!-- TensorFlow & Teachable Machine 라이브러리 -->
@@ -82,12 +94,15 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     document.querySelector('.file-upload').style.display = 'none';
-                    document.getElementById('image-preview').src = e.target.result;
+                    const imgPreview = document.getElementById('image-preview');
+                    imgPreview.src = e.target.result;
                     document.getElementById('image-preview-container').style.display = 'block';
                     document.getElementById('result-container').style.display = 'block';
                     
-                    // 분석 시작
-                    predict();
+                    // 이미지가 화면에 완전히 그려진 후 분석 시작
+                    imgPreview.onload = function() {
+                        predict();
+                    };
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -98,6 +113,8 @@
             const image = document.getElementById("image-preview");
             const prediction = await model.predict(image);
             
+            console.log("분석 결과 상세:", prediction); // 디버깅용
+
             let topClass = "";
             let topProb = 0;
 
@@ -105,10 +122,13 @@
                 const className = prediction[i].className;
                 const probability = (prediction[i].probability * 100).toFixed(0);
                 
-                if (className === "강아지") {
+                // "강아지" 또는 "Dog" 포함 여부 확인 (대소문자 무시)
+                if (className.includes("강아지") || className.toLowerCase().includes("dog")) {
                     document.getElementById("dog-percent").innerText = probability + "%";
                     document.getElementById("dog-bar").style.width = probability + "%";
-                } else if (className === "고양이") {
+                } 
+                // "고양이" 또는 "Cat" 포함 여부 확인 (대소문자 무시)
+                else if (className.includes("고양이") || className.toLowerCase().includes("cat")) {
                     document.getElementById("cat-percent").innerText = probability + "%";
                     document.getElementById("cat-bar").style.width = probability + "%";
                 }
@@ -119,12 +139,16 @@
                 }
             }
 
-            // 최종 결과 메시지
+            // 최종 결과 메시지 출력
             const resultText = document.getElementById("final-result-text");
-            if (topClass === "강아지") {
+            resultText.style.display = "block";
+            
+            if (topClass.includes("강아지") || topClass.toLowerCase().includes("dog")) {
                 resultText.innerText = "당신은 귀여운 강아지상! 🐶";
-            } else {
+            } else if (topClass.includes("고양이") || topClass.toLowerCase().includes("cat")) {
                 resultText.innerText = "당신은 도도한 고양이상! 🐱";
+            } else {
+                resultText.innerText = "분석 결과: " + topClass;
             }
         }
 
@@ -156,5 +180,14 @@
             localStorage.setItem('theme', theme);
         });
     </script>
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">홈</a>
+            <a href="animal-test.html">동물상 테스트</a>
+            <a href="about.html">소개</a>
+            <a href="privacy.html">개인정보처리방침</a>
+        </div>
+        <p>&copy; 2026 행운의 도구상자. All rights reserved.</p>
+    </footer>
 </body>
 </html>

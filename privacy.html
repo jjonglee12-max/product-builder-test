@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인정보처리방침 - 행운의 도구상자</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <a href="index.html" class="nav-btn">🏠 홈으로</a>
+        <button id="theme-btn">🌙 다크 모드</button>
+    </div>
+
+    <div class="container privacy-content" style="text-align: left;">
+        <h1>🛡️ 개인정보처리방침</h1>
+        <p class="subtitle">행운의 도구상자는 사용자의 개인정보를 소중히 여깁니다.</p>
+        
+        <div style="line-height: 1.8; color: var(--text-color);">
+            <h3>1. 개인정보 수집 항목</h3>
+            <p>본 사이트는 별도의 회원가입 없이 이용 가능하며, 사용자의 이름, 연락처 등의 개인정보를 직접적으로 수집하지 않습니다. 단, 동물상 테스트를 위해 업로드된 사진은 사용자의 브라우저 내에서만 처리(Client-side)되며 서버로 전송되거나 저장되지 않습니다.</p>
+
+            <h3>2. 광고 및 쿠키 (Google AdSense)</h3>
+            <p>본 사이트는 광고 게재를 위해 Google AdSense를 이용합니다. Google은 사용자의 웹사이트 방문 기록을 바탕으로 맞춤형 광고를 제공하기 위해 쿠키를 사용합니다. 사용자는 Google의 광고 설정을 통해 맞춤형 광고 게재를 중단할 수 있습니다.</p>
+
+            <h3>3. 제3자 제공</h3>
+            <p>본 사이트는 원칙적으로 사용자의 개인정보를 외부에 제공하지 않습니다. 단, Formspree를 통한 문의 시 사용자가 입력한 정보는 문의 응대를 위해서만 사용됩니다.</p>
+
+            <h3>4. 책임 한계</h3>
+            <p>본 사이트에서 제공하는 로또 번호 및 동물상 테스트 결과는 오락용이며, 실제 결과나 당첨을 보장하지 않습니다.</p>
+        </div>
+    </div>
+
+    <script>
+        // 테마 토글 로직
+        const themeBtn = document.getElementById('theme-btn');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        themeBtn.innerText = currentTheme === 'dark' ? '☀️ 라이트 모드' : '🌙 다크 모드';
+
+        themeBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                theme = 'light';
+                themeBtn.innerText = '🌙 다크 모드';
+            } else {
+                theme = 'dark';
+                themeBtn.innerText = '☀️ 라이트 모드';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+    </script>
+</body>
+</html>
