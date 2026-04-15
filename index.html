@@ -28,6 +28,28 @@
         
         <button id="draw-btn" class="draw-btn">번호 뽑기! 🎲</button>
     </div>
+
+    <!-- 제휴 문의 섹션 추가 -->
+    <div class="container contact-container">
+        <h2>🤝 제휴 및 비즈니스 문의</h2>
+        <p class="subtitle">함께 멋진 미래를 만들어가요!</p>
+        
+        <form action="https://formspree.io/f/xojyvzoq" method="POST" class="contact-form">
+            <div class="input-group">
+                <label for="name">성함/기업명</label>
+                <input type="text" name="name" id="name" placeholder="홍길동" required>
+            </div>
+            <div class="input-group">
+                <label for="email">이메일 주소</label>
+                <input type="email" name="_replyto" id="email" placeholder="example@email.com" required>
+            </div>
+            <div class="input-group">
+                <label for="message">문의 내용</label>
+                <textarea name="message" id="message" rows="4" placeholder="문의 내용을 입력해 주세요." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">문의 보내기 ✉️</button>
+        </form>
+    </div>
     
     <script src="script.js"></script>
 </body>

@@ -36,10 +36,91 @@ body {
     background: var(--bg-gradient);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* 세로로 정렬 */
+    justify-content: flex-start; /* 위에서부터 시작 */
     align-items: center;
     color: var(--text-color);
-    overflow: hidden;
+    padding: 60px 0; /* 위아래 여백 */
+    overflow-y: auto; /* 내용이 길어지면 스크롤 가능하게 */
+}
+
+/* 컨테이너 간 간격 */
+.container + .container {
+    margin-top: 40px;
+}
+
+/* 문의 폼 관련 스타일 */
+.contact-container h2 {
+    font-family: 'Jua', sans-serif;
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+.contact-form {
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--placeholder-bg);
+    color: var(--text-color);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+    color: var(--placeholder-text);
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-family: 'Jua', sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.5);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
 }
 
 /* 테마 토글 버튼 스타일 */
