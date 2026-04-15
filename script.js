@@ -1,3 +1,25 @@
+// 테마 전환 관련 로직
+const themeBtn = document.getElementById('theme-btn');
+const currentTheme = localStorage.getItem('theme') || 'dark';
+
+// 초기 테마 설정
+document.documentElement.setAttribute('data-theme', currentTheme);
+updateThemeButton(currentTheme);
+
+themeBtn.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme');
+    let newTheme = theme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeButton(newTheme);
+});
+
+function updateThemeButton(theme) {
+    themeBtn.textContent = theme === 'dark' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+}
+
+// 기존 로또 추첨 로직
 document.getElementById('draw-btn').addEventListener('click', drawNumbers);
 
 function drawNumbers() {
