@@ -3,96 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>행운의 로또 번호 추첨기 - 오늘의 당첨운을 확인하세요!</title>
-    <meta name="description" content="AI 기반 로또 번호 생성기. 공정한 알고리즘으로 추출한 행운 번호와 재미있는 동물상 테스트까지, 일상 속 행운의 도구상자를 만나보세요.">
+    <title>AI 동물상 테스트 - 강아지? 고양이? 당신의 동물상을 확인하세요!</title>
+    <meta name="description" content="구글 인공지능 기술(Teachable Machine)을 활용한 신개념 동물상 테스트. 얼굴 사진 한 장으로 당신의 매력을 분석해 보세요.">
     <link rel="stylesheet" href="style.css">
-    <!-- 한국어 폰트 아기자기한 Jua체와 깔끔한 Noto Sans 적용 -->
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4525432737309335"
      crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-4525432737309335">
 </head>
 <body>
     <div class="theme-toggle">
-        <a href="animal-test.html" class="nav-btn">🐾 동물상 테스트</a>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-btn active">🐾 동물상 테스트</a>
+            <a href="lotto.html" class="nav-btn">🎲 로또 추첨</a>
+            <a href="dinner.html" class="nav-btn">🍱 저녁 추천</a>
+        </nav>
         <button id="theme-btn">🌙 다크 모드</button>
     </div>
+
     <div class="container">
-        <h1>✨ 행운의 로또 번호 ✨</h1>
-        <p class="subtitle">이번 주 1등은 바로 당신! 기운을 모아보세요!</p>
-        
-        <div class="lotto-balls" id="result-container">
-            <!-- 초기 빈 상태 -->
-            <div class="ball placeholder">?</div>
-            <div class="ball placeholder">?</div>
-            <div class="ball placeholder">?</div>
-            <div class="ball placeholder">?</div>
-            <div class="ball placeholder">?</div>
-            <div class="ball placeholder">?</div>
+        <h1>🐾 동물상 테스트</h1>
+        <p class="subtitle">나는 강아지상일까, 고양이상일까? 사진을 올려보세요!</p>
+
+        <!-- 이미지 업로드 영역 -->
+        <div class="file-upload" onclick="document.querySelector('.file-upload-input').click()">
+            <div class="image-upload-wrap">
+                <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                <div class="drag-text">
+                    <div class="upload-icon">📸</div>
+                    <h3>클릭하여 사진을 업로드하세요!</h3>
+                </div>
+            </div>
         </div>
-        
-        <button id="draw-btn" class="draw-btn">번호 뽑기! 🎲</button>
+
+        <!-- 이미지 미리보기 영역 -->
+        <div id="image-preview-container">
+            <img id="image-preview" src="#" alt="your image" />
+            <button class="remove-image" onclick="removeUpload()">✕</button>
+        </div>
+
+        <!-- 분석 결과 영역 -->
+        <div id="result-container" class="result-container">
+            <div class="result-bar-wrapper">
+                <div class="label-text">
+                    <span>🐶 강아지상</span>
+                    <span id="dog-percent">0%</span>
+                </div>
+                <div class="bar-container">
+                    <div id="dog-bar" class="bar dog-bar"></div>
+                </div>
+            </div>
+            <div class="result-bar-wrapper">
+                <div class="label-text">
+                    <span>🐱 고양이상</span>
+                    <span id="cat-percent">0%</span>
+                </div>
+                <div class="bar-container">
+                    <div id="cat-bar" class="bar cat-bar"></div>
+                </div>
+            </div>
+            <div id="final-result-text"></div>
+        </div>
 
         <div class="guide-section">
-            <h3>🍀 로또 번호 추첨 가이드</h3>
-            <p>본 서비스는 1부터 45까지의 숫자 중 6개를 무작위로 추출하여 여러분만의 행운 조합을 제안합니다. 복권 당첨의 기회는 누구에게나 열려 있습니다!</p>
-            <p><strong>참고:</strong> 생성된 번호는 오락용이며, 실제 로또 당첨을 보장하지 않습니다. 건전한 복권 문화를 지향하며, 재미로 즐겨주세요!</p>
+            <h3>🤖 AI 동물상 분석 기술</h3>
+            <p>본 테스트는 Google의 <strong>Teachable Machine</strong> 라이브러리를 활용합니다. 수만 장의 강아지와 고양이 데이터를 학습한 인공지능 모델이 사용자의 얼굴 특징을 분석하여 가장 닮은 동물을 찾아냅니다.</p>
+            <p><strong>보안 안내:</strong> 업로드하신 사진은 절대 서버에 저장되지 않으며, 모든 분석 과정은 브라우저 내에서 안전하게 이루어집니다.</p>
         </div>
     </div>
 
-    <!-- 제휴 문의 섹션 추가 -->
-    <div class="container contact-container">
-        <h2>🤝 제휴 및 비즈니스 문의</h2>
-        <p class="subtitle">함께 멋진 미래를 만들어가요!</p>
-        
-        <form action="https://formspree.io/f/xojyvzoq" method="POST" class="contact-form">
-            <div class="input-group">
-                <label for="name">성함/기업명</label>
-                <input type="text" name="name" id="name" placeholder="홍길동" required>
-            </div>
-            <div class="input-group">
-                <label for="email">이메일 주소</label>
-                <input type="email" name="_replyto" id="email" placeholder="example@email.com" required>
-            </div>
-            <div class="input-group">
-                <label for="message">문의 내용</label>
-                <textarea name="message" id="message" rows="4" placeholder="문의 내용을 입력해 주세요." required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">문의 보내기 ✉️</button>
-        </form>
-    </div>
+    <!-- TensorFlow & Teachable Machine 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     
-    <!-- 댓글 섹션 추가 -->
-    <div class="container">
-        <h2 style="font-family: 'Jua', sans-serif; font-size: 2.2rem; margin-bottom: 20px;">💬 방명록 및 댓글</h2>
-        <div id="disqus_thread"></div>
-        <script>
-            /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-            /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://product-builder-test.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-    
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/xU7QkfiJM/";
+        let model, maxPredictions;
+
+        async function loadModel() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+        }
+        loadModel();
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('.file-upload').style.display = 'none';
+                    const imgPreview = document.getElementById('image-preview');
+                    imgPreview.src = e.target.result;
+                    document.getElementById('image-preview-container').style.display = 'block';
+                    document.getElementById('result-container').style.display = 'block';
+                    imgPreview.onload = function() { predict(); };
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function predict() {
+            const image = document.getElementById("image-preview");
+            const prediction = await model.predict(image);
+            let topClass = "";
+            let topProb = 0;
+
+            for (let i = 0; i < maxPredictions; i++) {
+                const className = prediction[i].className;
+                const probability = (prediction[i].probability * 100).toFixed(0);
+                if (className.includes("강아지") || className.toLowerCase().includes("dog")) {
+                    document.getElementById("dog-percent").innerText = probability + "%";
+                    document.getElementById("dog-bar").style.width = probability + "%";
+                } else if (className.includes("고양이") || className.toLowerCase().includes("cat")) {
+                    document.getElementById("cat-percent").innerText = probability + "%";
+                    document.getElementById("cat-bar").style.width = probability + "%";
+                }
+                if (prediction[i].probability > topProb) {
+                    topProb = prediction[i].probability;
+                    topClass = className;
+                }
+            }
+            const resultText = document.getElementById("final-result-text");
+            resultText.style.display = "block";
+            if (topClass.includes("강아지") || topClass.toLowerCase().includes("dog")) {
+                resultText.innerText = "당신은 귀여운 강아지상! 🐶";
+            } else if (topClass.includes("고양이") || topClass.toLowerCase().includes("cat")) {
+                resultText.innerText = "당신은 도도한 고양이상! 🐱";
+            } else {
+                resultText.innerText = "분석 결과: " + topClass;
+            }
+        }
+
+        function removeUpload() {
+            document.querySelector('.file-upload-input').value = "";
+            document.getElementById('image-preview-container').style.display = 'none';
+            document.querySelector('.file-upload').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('final-result-text').innerText = "";
+        }
+    </script>
     <script src="script.js"></script>
     <footer>
         <div class="footer-links">
-            <a href="index.html">홈</a>
-            <a href="animal-test.html">동물상 테스트</a>
+            <a href="index.html">동물상 테스트</a>
+            <a href="lotto.html">로또 추첨</a>
+            <a href="dinner.html">저녁 추천</a>
             <a href="about.html">소개</a>
             <a href="privacy.html">개인정보처리방침</a>
         </div>
